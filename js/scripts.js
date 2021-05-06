@@ -10,20 +10,21 @@ var capa_osm = L.tileLayer(
   }
 ).addTo(mapa);	
 
-// Otra capa base	
-var OpenTopoMap = L.tileLayer(
-	'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', 
+// Otra capa base
+var CartoDB_Voyager = L.tileLayer(
+	'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
 	{
-		maxZoom: 17,
-		attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+		subdomains: 'abcd',
+		maxZoom: 19
 	}
-).addTo(mapa);	
+).addTo(mapa);
 
 
 // Conjunto de capas base
 var capas_base = {
   "OSM": capa_osm,
-  "Open Topo Map": OpenTopoMap
+  "CartoDB Voyager": CartoDB_Voyager
 };	    
 	    
 // Control de capas
@@ -33,30 +34,44 @@ control_capas = L.control.layers(capas_base).addTo(mapa);
 L.control.scale({position: "topright", imperial: false}).addTo(mapa);
 
 // Capas vectoriales en formato GeoJSON
-$.getJSON("https://tpb729-desarrollosigweb-2021.github.io/datos/sinac/areas_protegidas-wgs84.geojson", function(geodata) {
-  var capa_asp = L.geoJson(geodata, {
+$.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/zonas_conservacion_wgs84.geojson", function(geodata) {
+  var capa_zcv = L.geoJson(geodata, {
     style: function(feature) {
 	  return {'color': "#013220", 'weight': 2.5, 'fillOpacity': 0.0}
     },
     onEachFeature: function(feature, layer) {
-      var popupText = "<strong>Área protegida</strong>: " + feature.properties.nombre_asp + "<br>" + "<strong>Categoría</strong>: " + feature.properties.cat_manejo;
+      var popupText = "<strong>Zona de conservación vial</strong>: " + feature.properties.Zona2 + "<br>" + "<strong>Nombre de la zona</strong>: " + feature.properties.Nombre + "<br>" + "<strong>Contacto</strong>: " + feature.properties.Contacto;
       layer.bindPopup(popupText);
     }			
   }).addTo(mapa);
 
-  control_capas.addOverlay(capa_asp, 'Áreas protegidas');
+  control_capas.addOverlay(capa_zcv, 'Zonas de conservación');
 });
 
-$.getJSON("https://tpb729-desarrollosigweb-2021.github.io/datos/ign/distritos-wgs84.geojson", function(geodata) {
-  var capa_dist = L.geoJson(geodata, {
+$.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/red_vial_nacional_wgs84.geojson", function(geodata) {
+  var capa_rvn = L.geoJson(geodata, {
     style: function(feature) {
-	  return {'color': "red", 'weight': 2.5, 'fillOpacity': 0.0}
+	  return {'color': "red", 'weight': 2, 'fillOpacity': 0.0}
     },
     onEachFeature: function(feature, layer) {
-      var popupText = "<strong>Distrito</strong>: " + feature.properties.distrito + "<br>" + "<strong>Cantón</strong>: " + feature.properties.canton + "<br>" + "<strong>Provincia</strong>: " + feature.properties.provincia;
+      var popupText = "<strong>Ruta</strong>: " + feature.properties.RUTA + "<br>" + "<strong>Sección de control</strong>: " + feature.properties.SECCION;
       layer.bindPopup(popupText);
     }			
   }).addTo(mapa);
 
-  control_capas.addOverlay(capa_dist, 'Distritos');
+  control_capas.addOverlay(capa_rvn, 'Red Vial Nacional');
+});
+
+$.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/danos_wgs84.geojson", function(geodata) {
+  var capa_danos = L.geoJson(geodata, {
+    style: function(feature) {
+	  return {'color': "green", 'weight': 2.5, 'fillOpacity': 0.0}
+    },
+    onEachFeature: function(feature, layer) {
+      var popupText = "<strong>Severidad</strong>: " + feature.properties.SEVERIDAD;
+      layer.bindPopup(popupText);
+    }			
+  }).addTo(mapa);
+
+  control_capas.addOverlay(capa_danos, 'Daños reportados');
 });
