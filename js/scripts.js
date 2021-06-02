@@ -68,7 +68,7 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/d
 	  return {'color': "green", 'weight': 2.5, 'fillOpacity': 1.0}
     },
     onEachFeature: function(feature, layer) {
-      var popupText = "<strong>Elemento</strong>: " + feature.properties.elemento + "<br>" + "<strong>Tipo de daño</strong>: " + feature.properties.tipo + "<br>" + "<strong>Severidad</strong>: " + feature.properties.severidad;
+      var popupText = "<strong>Estructura</strong>: " + feature.properties.estructura + "<br>" + <strong>Elemento</strong>: " + feature.properties.elemento + "<br>" + "<strong>Tipo de daño</strong>: " + feature.properties.tipo + "<br>" + "<strong>Severidad</strong>: " + feature.properties.severidad;
       layer.bindPopup(popupText);
     }			
   }).addTo(mapa);
