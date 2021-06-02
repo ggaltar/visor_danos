@@ -1,5 +1,5 @@
 // Mapa Leaflet
-var mapa = L.map('mapid').setView([9.8, -84.25], 8);
+var mapa = L.map('mapid').setView([9.8, -84.25], 8.5);
 
 // Definición de capas base
 var capa_osm = L.tileLayer(
