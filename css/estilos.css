@@ -1,5 +1,5 @@
 #mapid { 
-  height: 800px;
+  height: 700px;
   width: 80%;
   border: 1px solid #BFBFBF;
 }
@@ -32,4 +32,19 @@
 }
 .legend .max {
 	float: right;
+}
+.estiloIconos {
+  color: red;
+}
+
+.column {
+  float: left;
+  width: 40%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }

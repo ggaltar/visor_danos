@@ -125,3 +125,17 @@ $.getJSON('https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/z
   }
   leyenda.addTo(mapa)
 });
+
+// Capa raster de precipitación del periodo más frío
+var capa_precipitacion = L.imageOverlay("capas/bio19_cr.png", 
+	[[5.5002762949999999, -87.1003465999999946], 
+	[11.2181154430000003, -82.5547031640000029]], 
+	{opacity:0.5}
+).addTo(mapa);
+control_capas.addOverlay(capa_precipitacion, 'Precipitación del periodo más frío');
+
+// Función de control de opacidad
+function updateOpacityPrec() {
+  document.getElementById("span-opacity-prec").innerHTML = document.getElementById("sld-opacity-prec").value;
+  capa_precipitacion.setOpacity(document.getElementById("sld-opacity-prec").value);
+}

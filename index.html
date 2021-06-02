@@ -26,8 +26,11 @@
     <div id="mapid"></div>
 
     <!-- Código JavaScript para generar y manejar el mapa Leaflet -->
-    <script src="js/scripts.js"></script>					
+    <script src="js/scripts.js"></script>	
+
+	 <!-- Controles para la opacidad de la capa de precipitación -->
+	<h5>Opacidad de la capa de precipitación en el período más frío: <span id="span-opacity-prec">0.5</span></h5>
+	<input type='range' id='sld-opacity-prec' min='0' max='1' step='0.1' value='0.5' onchange='updateOpacityPrec();'>
+	
 </body>
 </html>	
-
-<!-- PROBANDO ACTUALIZACIONES -->
