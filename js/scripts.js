@@ -34,7 +34,7 @@ control_capas = L.control.layers(capas_base).addTo(mapa);
 L.control.scale({position: "topright", imperial: false}).addTo(mapa);
 
 // Capas vectoriales en formato GeoJSON
-$.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/zonas_conservacion_wgs84.geojson", function(geodata) {
+$.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/zonas_conservacion_wgs84.geojson", function(geodata) {
   var capa_zcv = L.geoJson(geodata, {
     style: function(feature) {
 	  return {'color': "#013220", 'weight': 2.5, 'fillOpacity': 0.0}
@@ -48,7 +48,7 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/zonas_con
   control_capas.addOverlay(capa_zcv, 'Zonas de conservación');
 });
 
-$.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/red_vial_nacional_wgs84.geojson", function(geodata) {
+$.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/red_vial_nacional_wgs84.geojson", function(geodata) {
   var capa_rvn = L.geoJson(geodata, {
     style: function(feature) {
 	  return {'color': "red", 'weight': 2, 'fillOpacity': 0.0}
@@ -62,7 +62,7 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/red_vial_
   control_capas.addOverlay(capa_rvn, 'Red Vial Nacional');
 });
 
-$.getJSON("https://raw.githubusercontent.com/ggaltar/tarea2/main/datos/danos_wgs84.geojson", function(geodata) {
+$.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/danos_wgs84.geojson", function(geodata) {
   var capa_danos = L.geoJson(geodata, {
     style: function(feature) {
 	  return {'color': "green", 'weight': 2.5, 'fillOpacity': 0.0}
