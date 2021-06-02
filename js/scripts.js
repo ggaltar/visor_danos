@@ -105,7 +105,7 @@ $.getJSON('https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/z
   control_capas.addOverlay(capa_zonas_coropletas, 'Cantidad de daños reportados por zona de conservación');	
 
   // Leyenda de la capa de coropletas
-  var leyenda = L.control({ position: 'bottomright' })
+  var leyenda = L.control({ position: 'bottomleft' })
   leyenda.onAdd = function (mapa) {
     var div = L.DomUtil.create('div', 'info legend')
     var limits = capa_zonas_coropletas.options.limits
