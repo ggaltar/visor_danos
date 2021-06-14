@@ -54,7 +54,7 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/r
 	  return {'color': "red", 'weight': 2, 'fillOpacity': 0.0}
     },
     onEachFeature: function(feature, layer) {
-      var popupText = "<strong>Ruta</strong>: " + feature.properties.RUTA + "<br>" + "<strong>Sección de control</strong>: " + feature.properties.SECCION;
+      var popupText = "<strong>Ruta</strong>: " + feature.properties.ruta + "<br>" + "<strong>Sección de control</strong>: " + feature.properties.seccion;
       layer.bindPopup(popupText);
     }			
   }).addTo(mapa);
