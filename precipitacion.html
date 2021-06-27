@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Daños-precipitación anual</title>     
+
+    <!-- Enlace a biblioteca JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    
+    <!-- Enlace a hoja CSS de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    
+    <!-- Enlace a biblioteca JavaScript de Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>    
+
+	<!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+	<ul>
+	  <li><a href=index.html>Principal</a></li>
+	  <li><a class="active" href="precipitacion.html">Daños-precipitación</a></li>
+	</ul>
+	
+    <h1>Daños en la Red Vial Nacional</h1>  
+	<h3> Control de opacidad: precipitación anual</h3> 	
+
+   
+    <!-- Elemento div para contener el mapa Leaflet -->
+    <div id="mapid"></div>
+
+    <!-- Código JavaScript para generar y manejar el mapa Leaflet -->
+    <script src="js/precip.js"></script>	
+
+	 <!-- Controles para la opacidad de la capa de precipitación -->
+	<h5>Opacidad de la capa de precipitación anual: <span id="span-opacity-prec">0.5</span></h5>
+	<input type='range' id='sld-opacity-prec' min='0' max='1' step='0.1' value='0.5' onchange='updateOpacityPrec();'>
+ 
+
+	<nav class="menu">
+		<ul>
+			<li><a href="index.html">Inicio</a></li>
+			<li><a href="precipitacion.html">Daños-precipitación</a></li>
+		</ul>
+	</nav>	
+</body>
+</html>	

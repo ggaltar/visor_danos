@@ -1,7 +1,60 @@
 #mapid { 
-  height: 700px;
-  width: 80%;
+  height: 580px;
+  width: 75%;
   border: 1px solid #BFBFBF;
+}
+
+p {
+    color:black;
+    font-size:100%;
+}
+
+h1 {
+    background-color:#E5E5E5;
+	padding: 5px 10px;
+}
+
+body {
+    background-color:#E5E5E5;
+    color:black;
+    margin:0 4px 0 0;
+    border:12px solid;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+  li a:hover {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+
+.negrita {
+    font-weight: bold;
+}
+
+.italica {
+    font-style: italic;
 }
 
 /*Selectores para la leyenda de leaflet-choroplet */

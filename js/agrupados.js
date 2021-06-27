@@ -1,5 +1,5 @@
 // Mapa Leaflet
-var mapa = L.map('mapid').setView([9.8, -84.25], 8.5);
+var mapa = L.map('mapid').setView([9.8, -84.25], 8);
 
 // Definición de capas base de tesela
 var capa_osm = L.tileLayer(
@@ -27,40 +27,48 @@ var capas_base = {
   "CartoDB Voyager": CartoDB_Voyager
 };	    
 	    
+		
+// Ícono personalizado para daños
+
+var iconoDano = new L.Icon({
+  iconUrl: 'img/marker-icon-blue.png',
+  shadowUrl: 'img/marker-shadow.png',
+  iconSize: [12, 20],
+  iconAnchor: [6, 20],
+  popupAnchor: [1, -34],
+  shadowSize: [20, 20]
+});
+	
 // Control de capas
 control_capas = L.control.layers(capas_base).addTo(mapa);	
 
 // Control de escala
 L.control.scale({position: "topright", imperial: false}).addTo(mapa);
 
-// Capas vectoriales en formato GeoJSON
-$.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/zonas_conservacion_wgs84.geojson", function(geodata) {
-  var capa_zcv = L.geoJson(geodata, {
-    style: function(feature) {
-	  return {'color': "#013220", 'weight': 2.5, 'fillOpacity': 0.0}
-    },
-    onEachFeature: function(feature, layer) {
-      var popupText = "<strong>Zona de conservación vial</strong>: " + feature.properties.Zona2 + "<br>" + "<strong>Nombre de la zona</strong>: " + feature.properties.Nombre + "<br>" + "<strong>Contacto</strong>: " + feature.properties.Contacto;
-      layer.bindPopup(popupText);
-    }			
-  }).addTo(mapa);
 
-  control_capas.addOverlay(capa_zcv, 'Zonas de conservación');
-});
+
+// Capas vectoriales en formato GeoJSON
+
+// Capa de la red vial nacional
 
 $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/red_vial_nacional_wgs84.geojson", function(geodata) {
   var capa_rvn = L.geoJson(geodata, {
     style: function(feature) {
-	  return {'color': "red", 'weight': 2, 'fillOpacity': 0.0}
+	  return {'color': "#C6250F", 'weight': 2, 'fillOpacity': 0.0}
     },
     onEachFeature: function(feature, layer) {
-      var popupText = "<strong>Ruta</strong>: " + feature.properties.ruta + "<br>" + "<strong>Sección de control</strong>: " + feature.properties.seccion;
+      var popupText = "<strong>Ruta</strong>: " + feature.properties.ruta + "<br>"
+	  + "<strong>Sección de control</strong>: " + feature.properties.seccion + "<br>"
+	  + "<strong>Tramo</strong>: " + feature.properties.descrip + "<br>"
+	  + "<strong>Clase</strong>: " + feature.properties.clase;
       layer.bindPopup(popupText);
-    }			
+    }
   }).addTo(mapa);
 
   control_capas.addOverlay(capa_rvn, 'Red Vial Nacional');
 });
+
+// Capas de daños
 
 $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/danos_wgs84.geojson", function(geodata) {
   var capa_danos = L.geoJson(geodata, {
@@ -68,13 +76,37 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/d
 	  return {'color': "green", 'weight': 2.5, 'fillOpacity': 1.0}
     },
     onEachFeature: function(feature, layer) {
-      var popupText = "<strong>Estructura</strong>: " + feature.properties.estructura + "<br>" + "<strong>Elemento</strong>: " + feature.properties.elemento + "<br>" + "<strong>Tipo de daño</strong>: " + feature.properties.tipo + "<br>" + "<strong>Severidad</strong>: " + feature.properties.severidad;
+      var popupText = "<strong>Estructura</strong>: " + feature.properties.estructura + "<br>"
+	  + "<strong>Elemento</strong>: " + feature.properties.elemento + "<br>"
+	  + "<strong>Tipo de daño</strong>: " + feature.properties.tipo + "<br>"
+	  + "<strong>Descripción del daño</strong>: " + feature.properties.descripcio + "<br>"
+	  + "<strong>Fecha del daño</strong>: " + feature.properties.fecha_dano + "<br>"
+	  + "<strong>Severidad</strong>: " + feature.properties.severidad
       layer.bindPopup(popupText);
-    }			
-  }).addTo(mapa);
+    },
+    pointToLayer: function(getJsonPoint, latlng) {
+        return L.marker(latlng, {icon: iconoDano});
+    }
+  });
 
+
+  // Capa de daños agrupados (no permite la agrupación después del nivel de zoom 10)
+  var capa_danos_agrupados = L.markerClusterGroup({spiderfyOnMaxZoom: false, disableClusteringAtZoom : 10});
+  capa_danos_agrupados.addLayer(capa_danos);
+  
+  
+  // Capa de calor (heatmap)
+  coordenadas = geodata.features.map(feat => feat.geometry.coordinates.reverse());
+  var capa_danos_calor = L.heatLayer(coordenadas, {radius: 18, blur: 8, minOpacity: 0.2, maxZoom: 20});
+
+ 
+ // Se añade la capa al mapa y al control de capas
+  capa_danos_agrupados.addTo(mapa);
+  control_capas.addOverlay(capa_danos_calor, 'Mapa de calor');
+  control_capas.addOverlay(capa_danos_agrupados, 'Registros agrupados de daños');
   control_capas.addOverlay(capa_danos, 'Daños reportados');
 });
+
 
 // Capa WMS
 var capa_cantones = L.tileLayer.wms('https://geos.snitcr.go.cr/be/IGN_5/wms?', {
@@ -86,7 +118,7 @@ var capa_cantones = L.tileLayer.wms('https://geos.snitcr.go.cr/be/IGN_5/wms?', {
 
 control_capas.addOverlay(capa_cantones, 'Cantones');
 
-// Capa de coropletas de cantidad de daños reportados por zona de conservación
+// Capa de coropletas zona de conservación por cantidad de daños
 $.getJSON('https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/zonas_conservacion_wgs84.geojson', function (geojson) {
   var capa_zonas_coropletas = L.choropleth(geojson, {
 	  valueProperty: 'cantidad',
@@ -99,10 +131,13 @@ $.getJSON('https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/z
 	    fillOpacity: 0.7
 	  },
 	  onEachFeature: function (feature, layer) {
-	    layer.bindPopup('Zona de conservación: ' + feature.properties.Zona2 + '<br>' + 'Cantidad de daños: ' + feature.properties.cantidad.toLocaleString())
+	    layer.bindPopup('<strong>Zona de conservación</strong>: ' + feature.properties.Zona2 + '<br>'
+		+ '<strong>Nombre de la zona</strong>: ' + feature.properties.Nombre + '<br>'
+		+'<strong>Cantidad de daños</strong>: ' + feature.properties.cantidad.toLocaleString()+ '<br>'
+		+ '<strong>Contacto</strong>: ' + feature.properties.Contacto)
 	  }
   }).addTo(mapa);
-  control_capas.addOverlay(capa_zonas_coropletas, 'Cantidad de daños reportados por zona de conservación');	
+  control_capas.addOverlay(capa_zonas_coropletas, 'Zonas de conservación vial');	
 
   // Leyenda de la capa de coropletas
   var leyenda = L.control({ position: 'bottomleft' })
@@ -125,17 +160,3 @@ $.getJSON('https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/z
   }
   leyenda.addTo(mapa)
 });
-
-// Capa raster de precipitación del periodo más frío
-var capa_precipitacion = L.imageOverlay("capas/bio19_cr.png", 
-	[[5.5002762949999999, -87.1003465999999946], 
-	[11.2181154430000003, -82.5547031640000029]], 
-	{opacity:0.5}
-).addTo(mapa);
-control_capas.addOverlay(capa_precipitacion, 'Precipitación del periodo más frío');
-
-// Función de control de opacidad
-function updateOpacityPrec() {
-  document.getElementById("span-opacity-prec").innerHTML = document.getElementById("sld-opacity-prec").value;
-  capa_precipitacion.setOpacity(document.getElementById("sld-opacity-prec").value);
-}

@@ -2,37 +2,110 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Tarea 3 Gabriel Corrales J.</title>     
-
-    <!-- Enlace a biblioteca JQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    
-    <!-- Enlace a hoja CSS de Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    
-    <!-- Enlace a biblioteca JavaScript de Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>    
-
-    <!-- Enlace a complemento Leaflet-choropleth -->
-    <script src="js/choropleth.js"></script> 
-
-    <link rel="stylesheet" href="css/estilos.css">
+    <title>Proyecto Gabriel Corrales J</title>    
+	<!-- Estilos personalizados -->
+	<link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <h1>Daños en la Red Vial Nacional</h1>  
-	<h3>Reportes por Zonas de Conservación Vial</h3> 	
-    
-    <!-- Elemento div para contener el mapa Leaflet -->
-    <div id="mapid"></div>
-
-    <!-- Código JavaScript para generar y manejar el mapa Leaflet -->
-    <script src="js/scripts.js"></script>	
-
-	 <!-- Controles para la opacidad de la capa de precipitación -->
-	<h5>Opacidad de la capa de precipitación en el período más frío: <span id="span-opacity-prec">0.5</span></h5>
-	<input type='range' id='sld-opacity-prec' min='0' max='1' step='0.1' value='0.5' onchange='updateOpacityPrec();'>
+	<ul>
+	  <li><a class="active" href="index.html">Principal</a></li>
+	  <li><a href="agrupados.html">Daños agrupados</a></li>
+	  <li><a href="precipitacion.html">Daños-precipitación</a></li>
+	</ul>
 	
-</body>
-</html>	
+	<center><h1>Proyecto de graduación</h1></center>
+	<p class = "italica">
+	Última actualización: 27 de junio, 2021.
+	</p>
 
-<!-- PROBANDO ACTUALIZACIONES -->
+	<a href="https://github.com/ggaltar/danos_red_vial">Código fuente</a>
+	
+	<h4>Contexto</h4>
+	
+	<p>
+	Yo formo parte de la Unidad de Sistemas de Información del CONAVI, institución a la que ingresé en mayo de 2018. Esta unidad está integrada por dos ingenieros civiles y un geógrafo, que somos los encargados, entre otras cosas, de la administración del SIG del CONAVI. Formamos parte de la Dirección de Planificación Institucional, por suerte alejada de temas de contrataciones y manejos de fondos que se han convertido en los temas más mediáticos de nuestro país en las últimas semanas.
+	</p>
+
+	<p>
+	Como parte de nuestras tareas, debemos realizar análisis que permitan definir planes de acción y prioridades de atención en sitios vulnerables de la Red Vial Nacional, con el objetivo de mejorar la eficiencia de las inversiones del país y evitar la reconstrucción de vulnerabilidades.
+	</p>
+	
+	<p>
+	La materia prima de estos análisis es la información sobre los daños presentados en la infraestructura de la red vial ocasionados por eventos naturales. Esta información es registrada por personal de campo de la institución, distribuido en diferentes zonas para administrar las obras de conservación vial. Con este propósito el país está dividido en 22 Zonas de Conservación Vial.
+	</p>
+	
+	<h4>Planteamiento del proyecto</h4>
+
+	<p>
+	Como parte de los requisitos para ingresar a esta maestría, debemos proponer un proyecto de graduación. Es por esto que yo desde 2019 planteé el desarrollo de un sistema que permita la captura de datos de campo mediante una aplicación móvil, su almacenamiento y visualización de manera automatizada. Esto nos permitiría facilitar todo el proceso previo por el que debíamos pasar para llegar a la etapa de análisis de los daños en la red vial. 
+	</p>
+
+	<p>
+	En ese momento, el proceso consistía en que el personal de campo registraba las coordenadas de los puntos donde se ubicaban los daños, tomaban fotografías y posteriormente debían llenar tablas en hojas de cálculo con la información. Luego enviaban estas hojas por correo electrónico a nuestra unidad y adjuntaban fotografías. Esta información debía ser depurada antes de almacenarse en capas geográficas y al final elaborar mapas que permitieran la visualización de los puntos.	
+	</p>
+
+	<center>
+	<img src="img/herramientaExcel.jpg" alt="herramientaExcel" height="220">
+	<p class = "italica">
+	Herramienta diseñada en hojas de cálculo para el registro de información
+	</p>
+	</center>
+
+	<h4>Cambio de herramienta</h4>
+	
+	<p>
+	Luego del planteamiento del proyecto, durante la etapa de aprobación del anteproyecto, la Unidad de Sistemas de Información obtuvo acceso a licencias que le permitieron evolucionar del uso de tablas en hojas de cálculo al uso la herramienta <strong>ArcGIS Survey123</strong> de Esri, para la elaboración de formularios que registran la ubicación de los puntos e imágenes que se almacenan en la nube de ArcGIS Online, lo que facilita su visualización mediante el uso de mapas en aplicaciones Web.
+	</p>
+
+	<center>
+	<img src="img/survey.jpg" alt="Survey123" height="500">
+	<p class = "italica">
+	ArcGIS Survey123 con el formulario de daños
+	</p>
+	</center>
+	
+	<p>
+	En otras palabras, el problema estaba resuelto. Sin embargo, esta solución obliga al CONAVI a la continuación del pago de licencias de ArcGIS, en momentos donde se entiende que el presupuesto a nivel nacional se ha reducido a causa de la Pandemia. Por lo tanto, el proyecto que propuse sigue teniendo cierto atractivo, si logra ofrecer lo mismo que Survey123 sin la necesidad del pago de licencias. Adicionalmente, inclusive, he podido detectar algunas debilidades de esta herramienta que podrían mejorarse con el proyecto, relacionadas con la reducida flexibilidad que permite al usuario. El sistema que propongo podría personalizar muchos aspectos según las necesidades de la institución.	
+	</p>
+	
+	<h4>Datos utilizados en esta aplicación web</h4>
+	
+	<p>
+	El uso de la herramienta Survey123 ha permitido la captura de alrededor de 700 puntos con daños en la red vial nacional. Estos registros se han llevado a cabo desde noviembre de 2020 hasta la fecha (junio 2021). La actividad de registro de daños debe realizarse de manera continua.	
+	</p>
+	
+	<center>
+	<a href="https://conavicr.maps.arcgis.com/apps/Styler/index.html?appid=cd8a833de91f44ddbf08366496d5db48">
+	<img src="img/visorArcGIS.JPG" alt="Survey123" height="500">
+	</a>
+	<p class = "italica">
+	<a href="https://conavicr.maps.arcgis.com/apps/Styler/index.html?appid=cd8a833de91f44ddbf08366496d5db48">
+	Visor de ArcGIS Online. </a><strong>Puede ingresar con el usuario “gestión.riesgo” y la contraseña “gr20conavi”.</strong>
+	</p>
+	</center>
+	
+	<p>
+	Los datos de daños utilizados en la aplicación web que aquí se presenta, <strong>fueron descargados de la capa de puntos generada por Survey123 a finales de mayo</strong>, cuando se tenía 477 registros.
+	</p>
+
+	<p>
+	Las capas con la Red Vial Nacional y las Zonas de Conservación Vial se obtuvieron a partir de las utilizadas en el CONAVI oficialmente.
+	</p>
+	
+	<p>
+	A continuación, podrá acceder a mapas con los registros agrupados de daños, un mapa de calor de los daños reportados o un mapa de la precipitación anual en Costa Rica con la ubicación de los daños. La idea de este último es correlacionar la ocurrencia de los daños con la ocurrencia de lluvia, que es el principal detonante de los daños.
+	</p>
+
+	<p class = "italica">
+	Gabriel Corrales Jiménez.
+	</p>
+
+
+	<nav class="menu">
+		<ul>
+			<li><a href="agrupados.html">Daños agrupados</a></li>
+			<li><a href="precipitacion.html">Daños-precipitación</a></li>
+		</ul>
+	</nav>
+</body>
+</html>
