@@ -61,7 +61,7 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/r
 	  + "<strong>Clase</strong>: " + feature.properties.clase;
       layer.bindPopup(popupText);
     }
-  }).addTo(mapa2);
+  });
 
   control_capas.addOverlay(capa_rvn, 'Red Vial Nacional');
 });
