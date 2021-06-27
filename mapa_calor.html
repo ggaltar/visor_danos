@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Daños agrupados</title>     
+    <title>Mapa de calor</title>     
 
     <!-- Enlace a biblioteca JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
@@ -13,44 +13,37 @@
     <!-- Enlace a biblioteca JavaScript de Leaflet -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>    
 
-    <!-- Enlace a complemento Leaflet-choropleth -->
-    <script src="js/choropleth.js"></script> 
+    <!-- Complemento Leaflet.heat -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
 
-    <!-- Complemento Leaflet.markercluster -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
-
-
+	<!-- Estilos personalizados -->
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+	
 	<ul>
 	  <li><a href=index.html>Principal</a></li>
-	  <li><a class="active" href="agrupados.html">Daños agrupados</a></li>
-	  <li><a href="mapa_calor.html">Mapa de calor</a></li>
+	  <li><a href="agrupados.html">Daños agrupados</a></li>
+	  <li><a class="active" href="mapa_calor.html">Mapa de calor</a></li>
 	  <li><a href=precipitacion.html>Daños-precipitacion</a></li>
-	</ul>
+	</ul>	
 
     <h1>Daños en la Red Vial Nacional</h1>  
-	<h3>Puntos agrupados</h3> 	
-	
-    
+	<h3>Mapa de calor</h3> 	
+	    
     <!-- Elemento div para contener el mapa Leaflet -->
     <div id="mapid"></div>
-	
-	<p>
-	Zonas de conservación vial según la cantidad de daños reportados.
-	</p>
 
     <!-- Código JavaScript para generar y manejar el mapa Leaflet -->
-    <script src="js/agrupados.js"></script>	
+    <script src="js/calor.js"></script>	
+
 	<nav class="menu">
 		<ul>
 			<li><a href="index.html">Inicio</a></li>
+			<li><a href="agrupados.html">Daños agrupados</a></li>
 			<li><a href="precipitacion.html">Daños-precipitación</a></li>
-			<li><a href="mapa_calor.html">Mapa de calor</a></li>
 		</ul>
 	</nav>	
+
 </body>
 </html>	

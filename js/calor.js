@@ -1,5 +1,5 @@
 // Mapa Leaflet
-var mapa = L.map('mapid').setView([9.7, -84.25], 8);
+var mapa1 = L.map('mapid').setView([9.7, -84.25], 8);
 
 // Definición de capas base de tesela
 var capa_osm = L.tileLayer(
@@ -8,7 +8,7 @@ var capa_osm = L.tileLayer(
     maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }
-).addTo(mapa);	
+).addTo(mapa1);	
 
 // Otra capa base de tesela
 var CartoDB_Voyager = L.tileLayer(
@@ -18,7 +18,7 @@ var CartoDB_Voyager = L.tileLayer(
 		subdomains: 'abcd',
 		maxZoom: 19
 	}
-).addTo(mapa);
+).addTo(mapa1);
 
 
 // Conjunto de capas base
@@ -40,10 +40,10 @@ var iconoDano = new L.Icon({
 });
 	
 // Control de capas
-control_capas = L.control.layers(capas_base).addTo(mapa);	
+control_capas = L.control.layers(capas_base).addTo(mapa1);	
 
 // Control de escala
-L.control.scale({position: "topright", imperial: false}).addTo(mapa);
+L.control.scale({position: "topright", imperial: false}).addTo(mapa1);
 
 
 
@@ -63,7 +63,7 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/r
 	  + "<strong>Clase</strong>: " + feature.properties.clase;
       layer.bindPopup(popupText);
     }
-  }).addTo(mapa);
+  }).addTo(mapa1);
 
   control_capas.addOverlay(capa_rvn, 'Red Vial Nacional');
 });
@@ -87,60 +87,29 @@ $.getJSON("https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/d
     pointToLayer: function(getJsonPoint, latlng) {
         return L.marker(latlng, {icon: iconoDano});
     }
-  });
-
-
-// Capa de daños agrupados (no permite la agrupación después del nivel de zoom 10)
-  var capa_danos_agrupados = L.markerClusterGroup({spiderfyOnMaxZoom: false, disableClusteringAtZoom : 10});
-  capa_danos_agrupados.addLayer(capa_danos);
+  })
   
-   
-// Se añade la capa al mapa y al control de capas
-  capa_danos_agrupados.addTo(mapa);
-  control_capas.addOverlay(capa_danos_agrupados, 'Registros agrupados de daños');
   control_capas.addOverlay(capa_danos, 'Daños reportados');
+  // Capa de calor (heatmap)
+
+  coordenadas = geodata.features.map(feat => feat.geometry.coordinates.reverse());
+  var capa_danos_calor = L.heatLayer(coordenadas, {radius: 18, blur: 8, minOpacity: 0.2, maxZoom: 20});
+
+  // Se añade la capa al mapa y al control de capas
+
+  capa_danos_calor.addTo(mapa1);
+    control_capas.addOverlay(capa_danos_calor, 'Mapa de calor');
 });
 
+// Capa WMS
 
-// Capa de coropletas zona de conservación por cantidad de daños
-$.getJSON('https://raw.githubusercontent.com/ggaltar/danos_red_vial/main/capas/zonas_conservacion_wgs84.geojson', function (geojson) {
-  var capa_zonas_coropletas = L.choropleth(geojson, {
-	  valueProperty: 'cantidad',
-	  scale: ['yellow', 'brown'],
-	  steps: 5,
-	  mode: 'q',
-	  style: {
-	    color: '#fff',
-	    weight: 2,
-	    fillOpacity: 0.7
-	  },
-	  onEachFeature: function (feature, layer) {
-	    layer.bindPopup('<strong>Zona de conservación</strong>: ' + feature.properties.Zona2 + '<br>'
-		+ '<strong>Nombre de la zona</strong>: ' + feature.properties.Nombre + '<br>'
-		+'<strong>Cantidad de daños</strong>: ' + feature.properties.cantidad.toLocaleString()+ '<br>'
-		+ '<strong>Contacto</strong>: ' + feature.properties.Contacto)
-	  }
-  }).addTo(mapa);
-  control_capas.addOverlay(capa_zonas_coropletas, 'Zonas de conservación vial');	
+var capa_cantones = L.tileLayer.wms('https://geos.snitcr.go.cr/be/IGN_5/wms?', {
+	  layers: 'limitecantonal_5k',
+	  format: 'image/png',
+	  //transparent: true
+	  opacity: 0.4
+}).addTo(mapa1);
 
-  // Leyenda de la capa de coropletas
-  var leyenda = L.control({ position: 'bottomleft' })
-  leyenda.onAdd = function (mapa) {
-    var div = L.DomUtil.create('div', 'info legend')
-    var limits = capa_zonas_coropletas.options.limits
-    var colors = capa_zonas_coropletas.options.colors
-    var labels = []
+control_capas.addOverlay(capa_cantones, 'Cantones');
 
-    // Add min & max
-    div.innerHTML = '<div class="labels"><div class="min">' + limits[0] + '</div> \
-			<div class="max">' + limits[limits.length - 1] + '</div></div>'
 
-    limits.forEach(function (limit, index) {
-      labels.push('<li style="background-color: ' + colors[index] + '"></li>')
-    })
-
-    div.innerHTML += '<ul>' + labels.join('') + '</ul>'
-    return div
-  }
-  leyenda.addTo(mapa)
-});
